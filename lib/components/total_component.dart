@@ -22,11 +22,24 @@ class TotalComponent extends StatelessWidget {
                   .labelLarge!
                   .copyWith(fontWeight: FontWeight.bold),
             ),
-            Text(
-              totalEssencial.toStringAsFixed(2),
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    fontWeight: FontWeight.bold,
+            RichText(
+              text: TextSpan(
+                text: 'R\$ ',
+                style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                children: [
+                  TextSpan(
+                    text: totalEssencial
+                        .toStringAsFixed(2)
+                        .toString()
+                        .replaceAll('.', ','),
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
+                ],
+              ),
             ),
           ],
         ),
@@ -39,11 +52,24 @@ class TotalComponent extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
             ),
-            Text(
-              totalSuperfluos.toStringAsFixed(2),
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    fontWeight: FontWeight.bold,
+            RichText(
+              text: TextSpan(
+                text: 'R\$ ',
+                style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                children: [
+                  TextSpan(
+                    text: totalSuperfluos
+                        .toStringAsFixed(2)
+                        .toString()
+                        .replaceAll('.', ','),
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
+                ],
+              ),
             ),
           ],
         ),
@@ -55,11 +81,24 @@ class TotalComponent extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
             ),
-            Text(
-              total.toStringAsFixed(2),
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    fontWeight: FontWeight.bold,
+            RichText(
+              text: TextSpan(
+                text: 'R\$ ',
+                style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                children: [
+                  TextSpan(
+                    text: total
+                        .toStringAsFixed(2)
+                        .toString()
+                        .replaceAll('.', ','),
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
+                ],
+              ),
             ),
           ],
         ),
