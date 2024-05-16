@@ -1,7 +1,6 @@
-import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signals/signals_flutter.dart';
 
 import '../components/add_item_component.dart';
@@ -19,6 +18,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final controller = AUTOINJECTOR.get<MainController>();
+  bool showEssencial = true;
+  bool showSuperfluo = true;
 
   @override
   void initState() {
@@ -44,62 +45,178 @@ class _HomePageState extends State<HomePage> {
             children: [
               Expanded(
                 child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 16),
-                        Text(
-                          'Essencial',
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleLarge!
-                              .copyWith(fontWeight: FontWeight.w500),
-                        ),
-                        const SizedBox(height: 8),
-                        SizedBox(
-                          width: double.infinity,
-                          child: ListItensComponent(
-                            listItens: controller.essencial.watch(context),
-                            removeItem: controller.removeEssencial,
-                            increaseQuantity: (v) {
-                              controller.increaseQuantityEssencial(v);
-                              setState(() {});
-                            },
-                            decreaseQuantity: (v) {
-                              controller.decreaseQuantityEssencial(v);
-                              setState(() {});
-                            },
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextButton(
+                        onPressed: () => setState(() {
+                          showEssencial = !showEssencial;
+                        }),
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 16.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        const SizedBox(height: 16),
-                        Text(
-                          'Superfluos ',
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleLarge!
-                              .copyWith(fontWeight: FontWeight.w500),
+                        child: Row(
+                          children: [
+                            Text(
+                              'Essencial',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge!
+                                  .copyWith(fontWeight: FontWeight.w500),
+                            ),
+                            const Spacer(),
+                            TextButton(
+                              onPressed: () {
+                                controller.clearEssencial();
+                              },
+                              child: const Text('Limpar'),
+                            ),
+                            const SizedBox(width: 8),
+                            AnimatedRotation(
+                              turns: showEssencial ? 0.25 : 0,
+                              duration: const Duration(milliseconds: 100),
+                              child: const Icon(
+                                  Icons.keyboard_arrow_right_rounded),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 8),
-                        SizedBox(
+                      ),
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 250),
+                        curve: Curves.easeIn,
+                        height: showEssencial
+                            ? max(
+                                40,
+                                controller.essencial.watch(context).length *
+                                        40 +
+                                    24,
+                              )
+                            : 0,
+                        child: SizedBox(
                           width: double.infinity,
-                          child: ListItensComponent(
-                            listItens: controller.superfluos.watch(context),
-                            removeItem: controller.removeSuperfluo,
-                            increaseQuantity: (v) {
-                              controller.increaseQuantitySuperfluo(v);
-                              setState(() {});
-                            },
-                            decreaseQuantity: (v) {
-                              controller.decreaseQuantitySuperfluo(v);
-                              setState(() {});
-                            },
+                          child: controller.essencial.watch(context).isEmpty
+                              ? const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text(
+                                    'Nenhum item adicionado',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                )
+                              : Card(
+                                  color: Theme.of(context).colorScheme.surface,
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ListItensComponent(
+                                      listItens:
+                                          controller.essencial.watch(context),
+                                      removeItem: controller.removeEssencial,
+                                      increaseQuantity: (v) {
+                                        controller.increaseQuantityEssencial(v);
+                                        setState(() {});
+                                      },
+                                      decreaseQuantity: (v) {
+                                        controller.decreaseQuantityEssencial(v);
+                                        setState(() {});
+                                      },
+                                    ),
+                                  ),
+                                ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      TextButton(
+                        onPressed: () => setState(() {
+                          showSuperfluo = !showSuperfluo;
+                        }),
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 16.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                      ],
-                    ),
+                        child: Row(
+                          children: [
+                            Text(
+                              'Superfluo',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge!
+                                  .copyWith(fontWeight: FontWeight.w500),
+                            ),
+                            const Spacer(),
+                            TextButton(
+                              onPressed: () {
+                                controller.clearSuperfluos();
+                              },
+                              child: const Text('Limpar'),
+                            ),
+                            const SizedBox(width: 8),
+                            AnimatedRotation(
+                              turns: showSuperfluo ? 0.25 : 0,
+                              duration: const Duration(milliseconds: 100),
+                              child: const Icon(
+                                  Icons.keyboard_arrow_right_rounded),
+                            ),
+                          ],
+                        ),
+                      ),
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 250),
+                        curve: Curves.easeIn,
+                        height: showSuperfluo
+                            ? max(
+                                40,
+                                controller.superfluos.watch(context).length *
+                                        40 +
+                                    24,
+                              )
+                            : 0,
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: controller.superfluos.watch(context).isEmpty
+                              ? const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text(
+                                    'Nenhum item adicionado',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                )
+                              : Card(
+                                  color: Theme.of(context).colorScheme.surface,
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ListItensComponent(
+                                      listItens:
+                                          controller.superfluos.watch(context),
+                                      removeItem: controller.removeSuperfluo,
+                                      increaseQuantity: (v) {
+                                        controller.increaseQuantitySuperfluo(v);
+                                        setState(() {});
+                                      },
+                                      decreaseQuantity: (v) {
+                                        controller.decreaseQuantitySuperfluo(v);
+                                        setState(() {});
+                                      },
+                                    ),
+                                  ),
+                                ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),

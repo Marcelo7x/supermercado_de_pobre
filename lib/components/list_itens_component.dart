@@ -18,14 +18,7 @@ class ListItensComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: listItens.isEmpty
-          ? const [
-              Text(
-                'Nenhum item adicionado',
-                style: TextStyle(fontSize: 16),
-              )
-            ]
-          : listItens
+      children: listItens
               .map(
                 (item) => Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
