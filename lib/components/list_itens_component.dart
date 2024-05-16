@@ -59,7 +59,7 @@ class ListItensComponent extends StatelessWidget {
                           icon: const Icon(Icons.remove),
                         ),
                         SizedBox(
-                          width: 30,
+                          width: 32,
                           child: Text(
                             item.quantity.toString(),
                             textAlign: TextAlign.center,
@@ -76,9 +76,7 @@ class ListItensComponent extends StatelessWidget {
                         ),
                         const SizedBox(width: 12),
                         IconButton(
-                          onPressed: () {
-                            removeItem(listItens.indexOf(item));
-                          },
+                          onPressed: () => removeItem(listItens.indexOf(item)),
                           icon: const Icon(
                             Icons.close_rounded,
                             color: Colors.red,
