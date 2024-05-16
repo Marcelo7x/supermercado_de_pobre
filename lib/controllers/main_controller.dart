@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signals/signals.dart';
 
@@ -41,26 +42,27 @@ class MainController {
   final essencial = listSignal<Item>(<Item>[], debugLabel: 'essencialList');
   final superfluos = listSignal<Item>(<Item>[], debugLabel: 'superfluosList');
   final nomeCompraController = TextEditingController();
-  final valorCompraController = TextEditingController();
+  final valorCompraController = MoneyMaskedTextController(
+      decimalSeparator: ',', thousandSeparator: '.', precision: 2);
   final qtdController = TextEditingController();
 
   MainController();
 
   Future<void> load() async {
     SharedPreferences.getInstance().then((prefs) {
-        final essencialList = prefs.getStringList('essencial');
-        final superfluosList = prefs.getStringList('superfluos');
-        if (essencialList != null) {
-          essencial.addAll(essencialList
-              .map((compra) => Item.fromJson(json.decode(compra))));
-          essencial.sort((a, b) => (-a.value).compareTo(-b.value));
-        }
-        if (superfluosList != null) {
-          superfluos.addAll(superfluosList
-              .map((compra) => Item.fromJson(json.decode(compra))));
-          superfluos.sort((a, b) => (-a.value).compareTo(-b.value));
-        }
-      });
+      final essencialList = prefs.getStringList('essencial');
+      final superfluosList = prefs.getStringList('superfluos');
+      if (essencialList != null) {
+        essencial.addAll(
+            essencialList.map((compra) => Item.fromJson(json.decode(compra))));
+        essencial.sort((a, b) => (-a.value).compareTo(-b.value));
+      }
+      if (superfluosList != null) {
+        superfluos.addAll(
+            superfluosList.map((compra) => Item.fromJson(json.decode(compra))));
+        superfluos.sort((a, b) => (-a.value).compareTo(-b.value));
+      }
+    });
   }
 
   void addEssencial(String nome, double valor, [int qtd = 1]) {

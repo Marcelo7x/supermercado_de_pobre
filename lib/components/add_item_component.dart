@@ -42,13 +42,14 @@ class AddItemComponent extends StatelessWidget {
               height: 40,
               child: TextField(
                 controller: controller.valorCompraController,
-                keyboardType: const TextInputType.numberWithOptions(
-                    decimal: true, signed: false),
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: false),
                 inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))
+                  LengthLimitingTextInputFormatter(20),
                 ],
                 decoration: InputDecoration(
                   hintText: 'Valor do item',
+                  prefix: const Text('R\$: '),
                   contentPadding: const EdgeInsets.all(8),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -66,7 +67,7 @@ class AddItemComponent extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox(
-              width: width * 0.3,
+              width: width * 0.28,
               height: 40,
               child: TextField(
                 controller: controller.qtdController,
@@ -86,6 +87,7 @@ class AddItemComponent extends StatelessWidget {
                 ),
               ),
             ),
+            const SizedBox(width: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -93,9 +95,9 @@ class AddItemComponent extends StatelessWidget {
                   height: 40,
                   child: FilledButton(
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
+                        backgroundColor: WidgetStateProperty.all(
                             Theme.of(context).colorScheme.secondary),
-                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        shape: WidgetStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         )),
                       ),
@@ -112,25 +114,22 @@ class AddItemComponent extends StatelessWidget {
                                 controller.nomeCompraController.text
                                     .trim()
                                     .substring(s[0].length + 1),
-                                double.parse(
-                                    controller.valorCompraController.text),
+                                controller.valorCompraController.numberValue,
                                 int.parse(s[0]));
                           } else {
                             controller.addSuperfluo(
                                 controller.nomeCompraController.text,
-                                double.parse(
-                                    controller.valorCompraController.text));
+                                controller.valorCompraController.numberValue);
                           }
                         } else {
                           controller.addSuperfluo(
                               controller.nomeCompraController.text,
-                              double.parse(
-                                  controller.valorCompraController.text),
+                              controller.valorCompraController.numberValue,
                               int.parse(controller.qtdController.text));
                         }
 
                         controller.nomeCompraController.clear();
-                        controller.valorCompraController.clear();
+                        controller.valorCompraController.updateValue(0);
                         controller.qtdController.clear();
                       },
                       child: const Text('Superfluo')),
@@ -140,7 +139,7 @@ class AddItemComponent extends StatelessWidget {
                   height: 40,
                   child: FilledButton(
                       style: ButtonStyle(
-                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        shape: WidgetStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         )),
                       ),
@@ -157,25 +156,22 @@ class AddItemComponent extends StatelessWidget {
                                 controller.nomeCompraController.text
                                     .trim()
                                     .substring(s[0].length + 1),
-                                double.parse(
-                                    controller.valorCompraController.text),
+                                controller.valorCompraController.numberValue,
                                 int.parse(s[0]));
                           } else {
                             controller.addEssencial(
                                 controller.nomeCompraController.text,
-                                double.parse(
-                                    controller.valorCompraController.text));
+                                controller.valorCompraController.numberValue);
                           }
                         } else {
                           controller.addEssencial(
                               controller.nomeCompraController.text,
-                              double.parse(
-                                  controller.valorCompraController.text),
+                              controller.valorCompraController.numberValue,
                               int.parse(controller.qtdController.text));
                         }
 
                         controller.nomeCompraController.clear();
-                        controller.valorCompraController.clear();
+                        controller.valorCompraController.updateValue(0);
                         controller.qtdController.clear();
                       },
                       child: const Text('Essencial')),
