@@ -24,21 +24,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-    print('controller: ${controller.essencial}');
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      SharedPreferences.getInstance().then((prefs) {
-        final essencialList = prefs.getStringList('essencial');
-        final superfluosList = prefs.getStringList('superfluos');
-        if (essencialList != null) {
-          controller.essencial.addAll(essencialList
-              .map((compra) => Item.fromJson(json.decode(compra))));
-        }
-        if (superfluosList != null) {
-          controller.superfluos.addAll(superfluosList
-              .map((compra) => Item.fromJson(json.decode(compra))));
-        }
-      });
+      controller.load();
     });
   }
 

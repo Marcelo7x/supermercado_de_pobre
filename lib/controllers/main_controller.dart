@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -46,9 +47,26 @@ class MainController {
 
   MainController();
 
+  Future<void> load() async {
+    SharedPreferences.getInstance().then((prefs) {
+        final essencialList = prefs.getStringList('essencial');
+        final superfluosList = prefs.getStringList('superfluos');
+        if (essencialList != null) {
+          essencial.addAll(essencialList
+              .map((compra) => Item.fromJson(json.decode(compra))));
+          essencial.sort((a, b) => (-a.value).compareTo(-b.value));
+        }
+        if (superfluosList != null) {
+          superfluos.addAll(superfluosList
+              .map((compra) => Item.fromJson(json.decode(compra))));
+          superfluos.sort((a, b) => (-a.value).compareTo(-b.value));
+        }
+      });
+  }
+
   void addEssencial(String nome, double valor, [int qtd = 1]) {
     essencial.add(Item(nome, valor, qtd));
-
+    essencial.sort((a, b) => a.value.compareTo(b.value));
     SharedPreferences.getInstance().then((prefs) {
       prefs.setStringList('essencial',
           essencial.value.map((compra) => json.encode(compra)).toList());
@@ -57,7 +75,7 @@ class MainController {
 
   void addSuperfluo(String nome, double valor, [int qtd = 1]) {
     superfluos.add(Item(nome, valor, qtd));
-
+    superfluos.sort((a, b) => (-a.value).compareTo(-b.value));
     SharedPreferences.getInstance().then((prefs) {
       prefs.setStringList('superfluos',
           superfluos.value.map((compra) => json.encode(compra)).toList());
