@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:supermercado_de_pobre/controllers/main_controller.dart';
 import 'package:flutter/material.dart';
 
@@ -19,68 +20,73 @@ class ListItensComponent extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: listItens
-              .map(
-                (item) => Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          .map(
+            (item) => Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          item.name.toString().toUpperCase(),
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelLarge!
-                              .copyWith(fontSize: 16),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text(
-                            'R\$${item.value.toStringAsFixed(2).replaceAll('.', ',')}',
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                        ),
-                      ],
+                    ConstrainedBox(
+                      constraints: BoxConstraints(
+                          maxWidth: MediaQuery.of(context).size.width * 0.35),
+                      child: Text(
+                        item.name.toString().toUpperCase(),
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelLarge!
+                            .copyWith(fontSize: 16),
+                      ),
                     ),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          onPressed: () =>
-                              decreaseQuantity(listItens.indexOf(item)),
-                          icon: const Icon(Icons.remove),
-                        ),
-                        SizedBox(
-                          width: 32,
-                          child: Text(
-                            item.quantity.toString(),
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelLarge!
-                                .copyWith(fontSize: 16),
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () =>
-                              increaseQuantity(listItens.indexOf(item)),
-                          icon: const Icon(Icons.add),
-                        ),
-                        const SizedBox(width: 12),
-                        IconButton(
-                          onPressed: () => removeItem(listItens.indexOf(item)),
-                          icon: const Icon(
-                            Icons.close_rounded,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        'R\$${item.value.toStringAsFixed(2).replaceAll('.', ',')}',
+                        style: const TextStyle(fontSize: 16),
+                      ),
                     ),
                   ],
                 ),
-              )
-              .toList(),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      onPressed: () =>
+                          decreaseQuantity(listItens.indexOf(item)),
+                      icon: const Icon(Icons.remove),
+                    ),
+                    SizedBox(
+                      width: 32,
+                      child: Text(
+                        item.quantity.toString(),
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelLarge!
+                            .copyWith(fontSize: 16),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () =>
+                          increaseQuantity(listItens.indexOf(item)),
+                      icon: const Icon(Icons.add),
+                    ),
+                    const SizedBox(width: 4),
+                    IconButton(
+                      onPressed: () => removeItem(listItens.indexOf(item)),
+                      icon: const Icon(
+                        Icons.close_rounded,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          )
+          .toList(),
     );
   }
 }
