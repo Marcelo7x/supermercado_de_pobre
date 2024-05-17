@@ -25,8 +25,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller.load();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await controller.load();
     });
   }
 

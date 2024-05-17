@@ -1,4 +1,3 @@
-
 import 'package:auto_injector/auto_injector.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +9,7 @@ final AUTOINJECTOR = AutoInjector();
 void main() {
   AUTOINJECTOR.addSingleton(MainController.new);
   AUTOINJECTOR.commit();
-  
+
   runApp(const MyApp());
 }
 
