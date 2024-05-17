@@ -69,19 +69,18 @@ class _HomePageState extends State<HomePage> {
                                   .titleLarge!
                                   .copyWith(fontWeight: FontWeight.w500),
                             ),
+                            AnimatedRotation(
+                              turns: showEssencial ? 0.25 : 0,
+                              duration: const Duration(milliseconds: 100),
+                              child: const Icon(
+                                  Icons.keyboard_arrow_right_rounded),
+                            ),
                             const Spacer(),
                             TextButton(
                               onPressed: () {
                                 controller.clearEssencial();
                               },
                               child: const Text('Limpar'),
-                            ),
-                            const SizedBox(width: 8),
-                            AnimatedRotation(
-                              turns: showEssencial ? 0.25 : 0,
-                              duration: const Duration(milliseconds: 100),
-                              child: const Icon(
-                                  Icons.keyboard_arrow_right_rounded),
                             ),
                           ],
                         ),
@@ -153,19 +152,18 @@ class _HomePageState extends State<HomePage> {
                                   .titleLarge!
                                   .copyWith(fontWeight: FontWeight.w500),
                             ),
+                            AnimatedRotation(
+                              turns: showSuperfluo ? 0.25 : 0,
+                              duration: const Duration(milliseconds: 100),
+                              child: const Icon(
+                                  Icons.keyboard_arrow_right_rounded),
+                            ),
                             const Spacer(),
                             TextButton(
                               onPressed: () {
                                 controller.clearSuperfluos();
                               },
                               child: const Text('Limpar'),
-                            ),
-                            const SizedBox(width: 8),
-                            AnimatedRotation(
-                              turns: showSuperfluo ? 0.25 : 0,
-                              duration: const Duration(milliseconds: 100),
-                              child: const Icon(
-                                  Icons.keyboard_arrow_right_rounded),
                             ),
                           ],
                         ),
